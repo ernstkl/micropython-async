@@ -104,6 +104,7 @@ class Delay_ms:
 
 class Switch:
     debounce_ms = 50
+    recheck_ms = 40
     def __init__(self, pin):
         self.pin = pin # Should be initialised for input with pullup
         self._open_func = False
@@ -137,8 +138,8 @@ class Switch:
                 # Ignore further state changes until switch has settled
                 await asyncio.sleep_ms(Switch.debounce_ms)
             else:
-                # Return control to event loop
-                await asyncio.sleep_ms(0)
+                # Leave time for other tasks to run
+                await asyncio.sleep_ms(Switch.recheck_ms)
 
 
 # An alternative Pushbutton solution with lower RAM use is available here
